@@ -1,0 +1,45 @@
+{% extends "blogapp/base.html" %}
+{% load static %}
+{% block content %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#" style="color: #333333;">{{ post.author }}</a>
+      <small class="text-muted">{{ post.date_posted|date:"F d, Y"}}</small>
+
+      <h2 class="article-title"> {{post.title}}</h2>
+      {% if post.image %}
+      <img src="{{ post.image.url }}">
+      {% endif %}
+      <p class="article-content">{{ post.content| safe}}</p>
+      {% if post.author == user %}
+      <div>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' post.id%}">Update</a>
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' post.id%}">Delete</a>
+      </div>
+      {% endif %}
+      <br>
+      <h4 style="color: #4e0b63;"> Comments </h4>
+      {% if not post.comments %}
+      No Comments...
+      <br> <a href="{% url 'new_comment' post.id %}"> Add First Comment</a>
+      {% else %}
+      {% for comment in post.comments.all %}
+      <strong>
+        {{ comment.name }}
+        -
+        {{ comment.created_on }}
+      </strong>
+      {{ comment.body }}
+      <br>
+      {% endfor %}
+
+      <a href="{% url 'new_comment' post.id %}" style="color: #333333;"> Add Comment</a>
+
+      {% endif %}
+      <br />
+
+</article>
+
+
+{% endblock content %}

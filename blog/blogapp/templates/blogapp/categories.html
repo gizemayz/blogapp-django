@@ -1,0 +1,8 @@
+{% extends "blogapp/base.html" %}
+{% block content %}
+<h1>Categories</h1>
+{% for x in categories %}
+<a class="article-title" href="{% url 'each-category' x.id %}"> {{ x.name }} </a>
+<br>
+{% endfor %}
+{% endblock content %}

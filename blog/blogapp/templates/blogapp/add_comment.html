@@ -1,0 +1,48 @@
+{% extends "blogapp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="{% url 'profile' %}">{{ post.author }}</a>
+      <small class="text-muted">{{ post.date_posted|date:"F d, Y"}}</small>
+
+      <h2 class="article-title"> {{post.title}}</h2>
+      {% if post.image %}
+      <img src="{{ post.image.url }}">
+      {% endif %}
+      <p class="article-content">{{ post.content| safe}}</p>
+      {% if post.author == user %}
+      <div>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' post.id%}">Update</a>
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' post.id%}">Delete</a>
+      </div>
+      {% endif %}
+      <br>
+      <h2> Comments </h2>
+      {% if not post.comments %}
+      No Comments...
+      <br> <a href="{% url 'new_comment' post.id %}"> Add First Comment</a>
+      {% else %}
+      {% for comment in post.comments.all %}
+      <strong>
+        {{ comment.name }}
+        -
+        {{ comment.created_on }}
+      </strong>
+      {{ comment.body }}
+      <br>
+      {% endfor %}
+      {% endif %}
+      <br>
+      <h4>Add Comment </h4>
+      <div class="content-section">
+        <form method="post">
+          {% csrf_token %}
+          {{ comment_form | crispy }}
+          <div class="form-group">
+            <button class="btn btn-outline-info" href="{{ post.get_absolute_url2 }}" type="submit">Comment</button>
+          </div>
+        </form>
+      </div>
+      {% endblock content %}

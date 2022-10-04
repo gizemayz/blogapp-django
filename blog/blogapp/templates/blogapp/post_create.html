@@ -1,0 +1,15 @@
+{% extends "blogapp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <form method="post" enctype="multipart/form-data">
+        <legend class="border-bottom mb-4">Blog Post</legend>
+        {% csrf_token %}
+        {{ new_post_form.media }}
+        {{ new_post_form | crispy }}
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Post</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
